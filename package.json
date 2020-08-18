@@ -1,0 +1,34 @@
+{
+  "name": "waves-forecast-api",
+  "version": "1.0.0",
+  "description": ":surfer: API to find out the best beaches to surf",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npm run build && node dist/src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diglopes/waves-forecast-api.git"
+  },
+  "keywords": [
+    "typescript",
+    "api",
+    "forecast"
+  ],
+  "author": "Diego Lopes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/diglopes/waves-forecast-api/issues"
+  },
+  "homepage": "https://github.com/diglopes/waves-forecast-api#readme",
+  "devDependencies": {
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^14.6.0",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.2"
+  }
+}
