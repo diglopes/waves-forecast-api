@@ -1,4 +1,5 @@
 import { StormGlass, ForecastPoint } from '@src/providers/storm-glass';
+import { InternalError } from '@src/util/errors/internal-error';
 
 export enum BeachPosition {
   South = 'S',
@@ -22,6 +23,12 @@ export interface TimeForecast {
   forecast: Array<BeachForecast>;
 }
 
+export class ForecastProcessingInternalError extends InternalError {
+  constructor(message: string) {
+    super(`Unexpected error during the forecast processing: ${message}`);
+  }
+}
+
 export class Forecast {
   constructor(protected stormGlass = new StormGlass()) {}
 
@@ -29,21 +36,26 @@ export class Forecast {
     beaches: Array<Beach>
   ): Promise<Array<TimeForecast>> {
     const pointsWithCorrectSources: Array<BeachForecast> = [];
-    for (const beach of beaches) {
-      const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
-      const enrichedBeachData = points.map((point) => ({
-        ...{
-          lat: beach.lat,
-          lng: beach.lng,
-          name: beach.name,
-          position: beach.position,
-          rating: 1,
-        },
-        ...point,
-      }));
-      pointsWithCorrectSources.push(...enrichedBeachData);
+    try {
+      for (const beach of beaches) {
+        const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
+        const enrichedBeachData = points.map((point) => ({
+          ...{
+            lat: beach.lat,
+            lng: beach.lng,
+            name: beach.name,
+            position: beach.position,
+            rating: 1,
+          },
+          ...point,
+        }));
+        pointsWithCorrectSources.push(...enrichedBeachData);
+      }
+
+      return this.mapForecastByTime(pointsWithCorrectSources);
+    } catch (error) {
+      throw new ForecastProcessingInternalError(error.message);
     }
-    return this.mapForecastByTime(pointsWithCorrectSources);
   }
 
   private mapForecastByTime(
