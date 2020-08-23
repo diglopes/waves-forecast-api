@@ -13,7 +13,6 @@ export interface Beach {
   lng: number;
   name: string;
   position: BeachPosition;
-  user: string;
 }
 
 export interface BeachModel extends Omit<Beach, '_id'>, Document {}
