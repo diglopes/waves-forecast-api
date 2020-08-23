@@ -34,6 +34,12 @@ export class SetupServer extends Server {
     await Database.close();
   }
 
+  public async start(): Promise<void> {
+    this.app.listen(this.port, () => {
+      console.info('Server listening on port:', this.port);
+    });
+  }
+
   public getApp(): Application {
     return this.app;
   }
