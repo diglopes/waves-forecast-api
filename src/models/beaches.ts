@@ -29,7 +29,7 @@ const schema = new mongoose.Schema(
       transform: (_, ret): void => {
         ret.id = ret._id;
         delete ret._id;
-        delete ret.__V;
+        delete ret.__v;
       },
     },
   }
