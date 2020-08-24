@@ -1,9 +1,14 @@
+import { User } from '@src/models/users';
+
 describe('Users functional tests', () => {
+  beforeEach(async () => {
+    await User.deleteMany({});
+  });
   describe('When creating a new user', () => {
     it('should successfully create a new user', async () => {
       const newUser = {
         name: 'John Doe',
-        email: 'joohn@email.com',
+        email: 'john@email.com',
         password: '123456',
       };
 
