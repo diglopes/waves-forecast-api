@@ -18,20 +18,24 @@ export class UsersCotroller extends BaseController {
   }
 
   @Post('authenticate')
-  public async authenticate(req: Request, res: Response): Promise<void> {
+  public async authenticate(req: Request, res: Response): Promise<Response> {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return;
+    if (!user) {
+      return res.status(401).send({ code: 401, error: 'User not found' });
+    }
     const passwordMatches = await AuthService.comparePasswords(
       password,
       user.password
     );
     if (!passwordMatches) {
-      return;
+      return res
+        .status(401)
+        .send({ code: 401, error: 'Password does not match!' });
     }
     const userJson = user.toJSON();
     delete userJson.password;
     const token = AuthService.gerenateToken(userJson);
-    res.status(200).send({ token });
+    return res.status(200).send({ token });
   }
 }
