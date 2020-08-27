@@ -19,6 +19,7 @@ describe('Forecast Service', () => {
         lng: 151.289824,
         name: 'Manly',
         position: BeachPosition.East,
+        user: 'fake-id',
       },
     ];
 
@@ -40,6 +41,7 @@ describe('Forecast Service', () => {
         lng: 151.289824,
         name: 'Manly',
         position: BeachPosition.East,
+        user: 'fake-id',
       },
     ];
     mockedStormGlass.fetchPoints.mockRejectedValue('Error: fetching data');
